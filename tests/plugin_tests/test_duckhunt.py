@@ -4,24 +4,26 @@ from unittest.mock import MagicMock
 import pytest
 
 
-@pytest.mark.parametrize('prefix,items,result', [
+@pytest.mark.parametrize(
+    'prefix,items,result',
     [
-        'Duck friend scores in #TestChannel: ',
-        {
-            'testuser': 5,
-            'testuser1': 1,
-        },
-        'Duck friend scores in #TestChannel: '
-        '\x02t\u200bestuser\x02: 5 • \x02t\u200bestuser1\x02: 1'
+        [
+            'Duck friend scores in #TestChannel: ',
+            {'testuser': 5, 'testuser1': 1,},
+            'Duck friend scores in #TestChannel: '
+            '\x02t\u200bestuser\x02: 5 • \x02t\u200bestuser1\x02: 1',
+        ],
     ],
-])
+)
 def test_top_list(prefix, items, result):
     from plugins.duckhunt import top_list
+
     assert top_list(prefix, items.items()) == result
 
 
 def test_display_scores(mock_db):
     from cloudbot.util import database
+
     importlib.reload(database)
     database.metadata.bind = mock_db.engine
     from plugins import duckhunt
@@ -47,8 +49,7 @@ def test_display_scores(mock_db):
     expected_testchan_friend_scores = {'testuser': 4, 'testuser1': 7}
 
     actual_testchan_friend_scores = duckhunt.get_channel_scores(
-        session, duckhunt.SCORE_TYPES['friend'],
-        conn, chan
+        session, duckhunt.SCORE_TYPES['friend'], conn, chan
     )
 
     assert actual_testchan_friend_scores == expected_testchan_friend_scores
@@ -114,6 +115,7 @@ def test_display_scores(mock_db):
 
 def test_ignore_integration():
     from plugins import duckhunt
+
     event = MagicMock()
     event.chan = "#chan"
     event.mask = "nick!user@host"

@@ -26,7 +26,7 @@ DATA = [
         "width": 320,
         "height": 240,
         "tags": "foo, bar",
-        "embed_privacy": "anywhere"
+        "embed_privacy": "anywhere",
     }
 ]
 

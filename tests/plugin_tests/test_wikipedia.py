@@ -14,11 +14,14 @@ def do_search(query, results=None):
     conn.bot = None
 
     cmd_event = CommandEvent(
-        text=query, cmd_prefix='.',
+        text=query,
+        cmd_prefix='.',
         triggered_command='wiki',
-        hook=MagicMock(), bot=conn.bot,
-        conn=conn, channel='#foo',
-        nick='foobaruser'
+        hook=MagicMock(),
+        bot=conn.bot,
+        conn=conn,
+        channel='#foo',
+        nick='foobaruser',
     )
 
     return wrap_hook_response(wikipedia.wiki, cmd_event, results=results)
@@ -26,8 +29,10 @@ def do_search(query, results=None):
 
 def make_search_url(query):
     query = query.replace(' ', '+')
-    return 'http://en.wikipedia.org/w/api.php?action=query&format=json&list=search' \
-           '&redirect=1&srsearch=' + query
+    return (
+        'http://en.wikipedia.org/w/api.php?action=query&format=json&list=search'
+        '&redirect=1&srsearch=' + query
+    )
 
 
 def test_search(mock_requests):
@@ -40,13 +45,7 @@ def test_search(mock_requests):
     ]
 
     mock_requests.add(
-        'GET',
-        make_search_url('some search'),
-        json={
-            'query': {
-                'search': []
-            }
-        }
+        'GET', make_search_url('some search'), json={'query': {'search': []}}
     )
 
     results = do_search('some search')
@@ -56,43 +55,36 @@ def test_search(mock_requests):
     mock_requests.add(
         'GET',
         make_search_url('a search'),
-        json={
-            'query': {
-                'search': [
-                    {
-                        'title': 'Other title'
-                    },
-                    {
-                        'title': 'A title',
-                    }
-                ]
-            }
-        }
+        json={'query': {'search': [{'title': 'Other title'}, {'title': 'A title',}]}},
     )
 
-    mock_requests.add('GET', wikipedia.make_summary_url('Other title'), json={
-        'type': 'nonstandard'
-    })
+    mock_requests.add(
+        'GET', wikipedia.make_summary_url('Other title'), json={'type': 'nonstandard'}
+    )
 
-    mock_requests.add('GET', wikipedia.make_summary_url('A title'), json={
-        'type': 'standard',
-        'extract': 'Some description',
-        'content_urls': {
-            'desktop': {'page': 'Some url'}
-        }
-    })
+    mock_requests.add(
+        'GET',
+        wikipedia.make_summary_url('A title'),
+        json={
+            'type': 'standard',
+            'extract': 'Some description',
+            'content_urls': {'desktop': {'page': 'Some url'}},
+        },
+    )
 
     results = do_search('a search')
 
     assert results == [('return', 'A title :: Some description :: Some url')]
 
-    mock_requests.replace('GET', wikipedia.make_summary_url('A title'), json={
-        'type': 'standard',
-        'extract': '',
-        'content_urls': {
-            'desktop': {'page': 'Some url'}
-        }
-    })
+    mock_requests.replace(
+        'GET',
+        wikipedia.make_summary_url('A title'),
+        json={
+            'type': 'standard',
+            'extract': '',
+            'content_urls': {'desktop': {'page': 'Some url'}},
+        },
+    )
 
     results = do_search('a search')
 

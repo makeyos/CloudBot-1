@@ -53,7 +53,7 @@ class Registry:
             if self.working:
                 return True
 
-            if (time.time() - self.last_check) > (5*60):
+            if (time.time() - self.last_check) > (5 * 60):
                 # It's been 5 minutes, try again
                 self.working = True
                 return True
@@ -80,10 +80,7 @@ class Registry:
         return self._items.get(name)
 
     def get_working(self) -> Optional['Item']:
-        working = [
-            item for item in self._items.values()
-            if item.should_use
-        ]
+        working = [item for item in self._items.values() if item.should_use]
 
         if not working:
             return None
@@ -173,8 +170,7 @@ class ServiceError(Exception):
 class ServiceHTTPError(ServiceError):
     def __init__(self, message: str, response: Response):
         super().__init__(
-            response.request,
-            '[HTTP {}] {}'.format(response.status_code, message)
+            response.request, '[HTTP {}] {}'.format(response.status_code, message)
         )
         self.message = message
         self.response = response
@@ -267,7 +263,12 @@ class Googl(Shortener):
         k = {'key': key}
         p = {'longUrl': url}
         try:
-            r = requests.post('https://www.googleapis.com/urlshortener/v1/url', params=k, data=json.dumps(p), headers=h)
+            r = requests.post(
+                'https://www.googleapis.com/urlshortener/v1/url',
+                params=k,
+                data=json.dumps(p),
+                headers=h,
+            )
             r.raise_for_status()
         except HTTPError as e:
             r = e.response

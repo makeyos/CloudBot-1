@@ -44,12 +44,7 @@ def test_get_plugin(mock_manager):
     file_path = Path('plugins').resolve() / 'test.py'
     file_name = file_path.name
 
-    obj = Plugin(
-        str(file_path),
-        file_name,
-        'test',
-        MockModule(),
-    )
+    obj = Plugin(str(file_path), file_name, 'test', MockModule(),)
 
     mock_manager._add_plugin(obj)
 
@@ -67,49 +62,36 @@ def test_can_load(mock_manager):
 
     assert mock_manager.can_load('plugins.foo')
 
-    mock_manager.bot.config.update({
-        'plugin_loading': {
-            'use_whitelist': True,
-            'whitelist': [
-                'plugins.bar',
-            ]
-        }
-    })
+    mock_manager.bot.config.update(
+        {'plugin_loading': {'use_whitelist': True, 'whitelist': ['plugins.bar',]}}
+    )
     assert not mock_manager.can_load('plugins.foo')
 
-    mock_manager.bot.config.update({
-        'plugin_loading': {
-            'use_whitelist': True,
-            'whitelist': [
-                'plugins.foo',
-            ]
-        }
-    })
+    mock_manager.bot.config.update(
+        {'plugin_loading': {'use_whitelist': True, 'whitelist': ['plugins.foo',]}}
+    )
     assert mock_manager.can_load('plugins.foo')
 
-    mock_manager.bot.config.update({
-        'plugin_loading': {
-            'use_whitelist': False,
-            'whitelist': [
-                'plugins.bar',
-            ],
-            'blacklist': [
-                'plugins.foo',
-            ]
+    mock_manager.bot.config.update(
+        {
+            'plugin_loading': {
+                'use_whitelist': False,
+                'whitelist': ['plugins.bar',],
+                'blacklist': ['plugins.foo',],
+            }
         }
-    })
+    )
     assert not mock_manager.can_load('plugins.foo')
 
-    mock_manager.bot.config.update({
-        'plugin_loading': {
-            'use_whitelist': False,
-            'whitelist': [
-                'plugins.bar',
-            ],
-            'blacklist': [
-            ]
+    mock_manager.bot.config.update(
+        {
+            'plugin_loading': {
+                'use_whitelist': False,
+                'whitelist': ['plugins.bar',],
+                'blacklist': [],
+            }
         }
-    })
+    )
     assert mock_manager.can_load('plugins.foo')
 
 
@@ -169,9 +151,7 @@ def _test_weird_obj(patch_import_module, mock_manager, weird_obj):
 
 
 def test_plugin_with_objs_none_attr(mock_manager, patch_import_module):
-    _test_weird_obj(
-        patch_import_module, mock_manager, WeirdObject(lambda *args: None)
-    )
+    _test_weird_obj(patch_import_module, mock_manager, WeirdObject(lambda *args: None))
 
 
 def test_plugin_with_objs_mock_attr(mock_manager, patch_import_module):
@@ -181,32 +161,28 @@ def test_plugin_with_objs_mock_attr(mock_manager, patch_import_module):
 
 
 def test_plugin_with_objs_dict_attr(mock_manager, patch_import_module):
-    _test_weird_obj(
-        patch_import_module, mock_manager, WeirdObject(lambda *args: {})
-    )
+    _test_weird_obj(patch_import_module, mock_manager, WeirdObject(lambda *args: {}))
 
 
 def test_plugin_with_objs_full_dict_attr(mock_manager, patch_import_module):
     _test_weird_obj(
-        patch_import_module, mock_manager, WeirdObject(lambda *args: {
-            'some_thing': object(),
-        })
+        patch_import_module,
+        mock_manager,
+        WeirdObject(lambda *args: {'some_thing': object(),}),
     )
 
 
 def test_plugin_load_disabled(mock_manager, patch_import_module, patch_import_reload):
     patch_import_module.return_value = MockModule()
-    mock_manager.bot.config.update({
-        'plugin_loading': {
-            'use_whitelist': True,
-            'whitelist': [
-                'plugins.bar',
-            ]
-        }
-    })
-    assert mock_manager.bot.loop.run_until_complete(
-        mock_manager.load_plugin('plugins/test.py')
-    ) is None
+    mock_manager.bot.config.update(
+        {'plugin_loading': {'use_whitelist': True, 'whitelist': ['plugins.bar',]}}
+    )
+    assert (
+        mock_manager.bot.loop.run_until_complete(
+            mock_manager.load_plugin('plugins/test.py')
+        )
+        is None
+    )
 
     patch_import_module.assert_not_called()
     patch_import_reload.assert_not_called()
@@ -222,12 +198,12 @@ def test_safe_resolve(mock_manager):
 
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize('do_sieve,sieve_allow,single_thread', list(
-    itertools.product([True, False], [True, False], [True, False])
-))
+@pytest.mark.parametrize(
+    'do_sieve,sieve_allow,single_thread',
+    list(itertools.product([True, False], [True, False], [True, False])),
+)
 async def test_launch(
-        mock_manager, patch_import_module, do_sieve,
-        sieve_allow, single_thread
+    mock_manager, patch_import_module, do_sieve, sieve_allow, single_thread
 ):
     called = False
     sieve_called = False

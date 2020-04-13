@@ -34,20 +34,12 @@ class WeakDict(dict):
 
 class MemberNotFoundException(KeyError):
     def __init__(self, name, chan):
-        super().__init__(
-            "No such member '{}' in channel '{}'".format(
-                name, chan.name
-            )
-        )
+        super().__init__("No such member '{}' in channel '{}'".format(name, chan.name))
         self.name = name
         self.chan = chan
         self.members = list(chan.users.values())
-        self.nicks = [
-            memb.user.nick for memb in self.members
-        ]
-        self.masks = [
-            memb.user.mask.mask for memb in self.members
-        ]
+        self.nicks = [memb.user.nick for memb in self.members]
+        self.masks = [memb.user.mask.mask for memb in self.members]
 
 
 class ChannelMembersDict(KeyFoldDict):
@@ -176,7 +168,9 @@ class Channel(MappingAttributeAdapter):
                 logger.warning(
                     "[%s|chantrack] Attempted to add existing status "
                     "to channel member: %s %s",
-                    self.conn.name, self, status
+                    self.conn.name,
+                    self,
+                    status,
                 )
             else:
                 self.status.append(status)
@@ -191,7 +185,9 @@ class Channel(MappingAttributeAdapter):
                 logger.warning(
                     "[%s|chantrack] Attempted to remove status not set "
                     "on member: %s %s",
-                    self.conn.name, self, status
+                    self.conn.name,
+                    self,
+                    status,
                 )
             else:
                 self.status.remove(status)
@@ -260,9 +256,7 @@ class User(MappingAttributeAdapter):
         """
         :type channel: Channel
         """
-        self.channels[channel.name] = memb = channel.get_member(
-            self, create=True
-        )
+        self.channels[channel.name] = memb = channel.get_member(self, create=True)
         return memb
 
     @property
@@ -357,14 +351,16 @@ def update_conn_data(conn):
         update_chan_data(conn, chan)
 
 
-SUPPORTED_CAPS = frozenset({
-    "userhost-in-names",
-    "multi-prefix",
-    "extended-join",
-    "account-notify",
-    "away-notify",
-    "chghost",
-})
+SUPPORTED_CAPS = frozenset(
+    {
+        "userhost-in-names",
+        "multi-prefix",
+        "extended-join",
+        "account-notify",
+        "away-notify",
+        "chghost",
+    }
+)
 
 
 @hook.on_cap_available(*SUPPORTED_CAPS)
@@ -570,10 +566,7 @@ class MappingSerializer:
 
             self._seen_objects.append(id(obj))
 
-            return {
-                self._serialize(k): self._serialize(v)
-                for k, v in obj.items()
-            }
+            return {self._serialize(k): self._serialize(v) for k, v in obj.items()}
 
         if isinstance(obj, Iterable):
             if id(obj) in self._seen_objects:
@@ -581,10 +574,7 @@ class MappingSerializer:
 
             self._seen_objects.append(id(obj))
 
-            return [
-                self._serialize(item)
-                for item in obj
-            ]
+            return [self._serialize(item) for item in obj]
 
         return repr(obj)
 
@@ -924,7 +914,7 @@ def on_away(conn, nick, irc_paramlist):
         reason = None
 
     user = get_users(conn).getuser(nick)
-    user.is_away = (reason is not None)
+    user.is_away = reason is not None
     user.away_message = reason
 
 

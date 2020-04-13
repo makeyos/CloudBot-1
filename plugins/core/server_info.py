@@ -68,7 +68,9 @@ def handle_extbans(value, serv_info):
 def on_isupport(conn, irc_paramlist):
     serv_info = conn.memory["server_info"]
     token_data = serv_info["isupport_tokens"]
-    tokens = irc_paramlist[1:-1]  # strip the nick and trailing ':are supported by this server' message
+    tokens = irc_paramlist[
+        1:-1
+    ]  # strip the nick and trailing ':are supported by this server' message
     for token in tokens:
         name, _, value = token.partition('=')
         name = name.upper()

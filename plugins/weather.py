@@ -26,20 +26,28 @@ table = Table(
     database.metadata,
     Column('nick', String),
     Column('loc', String),
-    PrimaryKeyConstraint('nick')
+    PrimaryKeyConstraint('nick'),
 )
 
 location_cache = []
 
 BEARINGS = (
-    'N', 'NNE',
-    'NE', 'ENE',
-    'E', 'ESE',
-    'SE', 'SSE',
-    'S', 'SSW',
-    'SW', 'WSW',
-    'W', 'WNW',
-    'NW', 'NNW',
+    'N',
+    'NNE',
+    'NE',
+    'ENE',
+    'E',
+    'ESE',
+    'SE',
+    'SSE',
+    'S',
+    'SSW',
+    'SW',
+    'WSW',
+    'W',
+    'WNW',
+    'NW',
+    'NNW',
 )
 
 # math constants
@@ -107,7 +115,11 @@ def add_location(nick, location, db):
     test = dict(location_cache)
     location = str(location)
     if nick.lower() in test:
-        db.execute(table.update().values(loc=location.lower()).where(table.c.nick == nick.lower()))
+        db.execute(
+            table.update()
+            .values(loc=location.lower())
+            .where(table.c.nick == nick.lower())
+        )
         db.commit()
         load_cache(db)
     else:
@@ -182,9 +194,10 @@ def check_and_parse(event, db):
         return None, str(e)
 
     fio = ForecastIO(
-        ds_key, units=ForecastIO.UNITS_US,
+        ds_key,
+        units=ForecastIO.UNITS_US,
         latitude=location_data['lat'],
-        longitude=location_data['lng']
+        longitude=location_data['lng'],
     )
 
     return (location_data, fio), None
@@ -233,9 +246,7 @@ def weather(reply, db, triggered_prefix, event):
     )
 
     url = web.try_shorten(
-        'https://darksky.net/forecast/{lat:.3f},{lng:.3f}'.format_map(
-            location_data
-        )
+        'https://darksky.net/forecast/{lat:.3f},{lng:.3f}'.format_map(location_data)
     )
 
     reply(
@@ -295,14 +306,11 @@ def forecast(reply, db, event):
     ]
 
     day_str = colors.parse("$(b){name}$(b): {summary}; ") + '; '.join(
-        '{}: {}'.format(part[0], part[1])
-        for part in parts
+        '{}: {}'.format(part[0], part[1]) for part in parts
     )
 
     url = web.try_shorten(
-        'https://darksky.net/forecast/{lat:.3f},{lng:.3f}'.format_map(
-            location_data
-        )
+        'https://darksky.net/forecast/{lat:.3f},{lng:.3f}'.format_map(location_data)
     )
 
     out_format = "{today_str} | {tomorrow_str} -- {place} - $(ul){url}$(clear)"
@@ -312,6 +320,6 @@ def forecast(reply, db, event):
             today_str=day_str.format_map(today),
             tomorrow_str=day_str.format_map(tomorrow),
             place=location_data['address'],
-            url=url
+            url=url,
         )
     )

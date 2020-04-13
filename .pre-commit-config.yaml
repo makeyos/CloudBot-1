@@ -13,11 +13,7 @@ repos:
   hooks:
   - id: isort
     additional_dependencies: [pipreqs, pip-api]
-#- repo: https://github.com/psf/black
-#  rev: 19.10b0
-#  hooks:
-#  - id: black
-#-   repo: https://github.com/pre-commit/mirrors-autopep8
-#    rev: v1.5.1
-#    hooks:
-#    -   id: autopep8
+- repo: https://github.com/psf/black
+  rev: 19.10b0
+  hooks:
+  - id: black

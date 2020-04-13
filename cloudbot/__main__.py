@@ -47,7 +47,9 @@ def main():
             # we are currently in the process of restarting
             stopped_while_restarting = True
         else:
-            async_util.run_coroutine_threadsafe(_bot.stop("Killed (Received SIGINT {})".format(signum)), _bot.loop)
+            async_util.run_coroutine_threadsafe(
+                _bot.stop("Killed (Received SIGINT {})".format(signum)), _bot.loop
+            )
 
         logger.warning("Bot received Signal Interrupt (%s)", signum)
 

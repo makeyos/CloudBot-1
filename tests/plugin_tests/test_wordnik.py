@@ -307,9 +307,7 @@ class TestPronounce(WordTestBase):
                     "raw": "W ER1 D",
                     "rawType": "arpabet",
                     "attributionText": "from The CMU Pronouncing Dictionary.",
-                    "attributionUrl": (
-                        "http://www.speech.cs.cmu.edu/cgi-bin/cmudict"
-                    ),
+                    "attributionUrl": ("http://www.speech.cs.cmu.edu/cgi-bin/cmudict"),
                 },
                 {
                     "seq": 0,

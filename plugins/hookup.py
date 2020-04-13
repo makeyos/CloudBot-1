@@ -35,10 +35,12 @@ def hookup(db, chan):
         return
 
     times = time.time() - 86400
-    results = db.execute(select(
-        [seen_table.c.name],
-        and_(seen_table.c.chan == chan, seen_table.c.time > times)
-    )).fetchall()
+    results = db.execute(
+        select(
+            [seen_table.c.name],
+            and_(seen_table.c.chan == chan, seen_table.c.time > times),
+        )
+    ).fetchall()
 
     if not results or len(results) < 2:
         return "something went wrong"

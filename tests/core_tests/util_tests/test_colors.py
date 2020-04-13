@@ -65,8 +65,8 @@ def test_get_random_color():
     assert get_color("random", return_formatted=False) in list(IRC_COLOUR_DICT.values())
 
     with patch(
-            'cloudbot.util.colors.randint',
-            return_value=4  # chosen by fair dice roll, guranteed to be random.
+        'cloudbot.util.colors.randint',
+        return_value=4,  # chosen by fair dice roll, guranteed to be random.
     ):
         assert get_color('random') == '\x0304'
 

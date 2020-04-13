@@ -24,7 +24,9 @@ class StockSymbolNotFoundError(APIError):
 
 
 class AVApi:
-    def __init__(self, api_key=None, url="https://www.alphavantage.co/query", user_agent=None):
+    def __init__(
+        self, api_key=None, url="https://www.alphavantage.co/query", user_agent=None
+    ):
         self.api_key = api_key
         self.url = url
         self.user_agent = user_agent
@@ -40,10 +42,16 @@ class AVApi:
 
     def _time_series(self, func, symbol, data_type='json', output_size='compact'):
         _data = self._request(
-            function="time_series_{}".format(func).upper(), symbol=symbol, outputsize=output_size, datatype=data_type
+            function="time_series_{}".format(func).upper(),
+            symbol=symbol,
+            outputsize=output_size,
+            datatype=data_type,
         )
         try:
-            return _data["Time Series ({})".format(func.title())], _data['Meta Data']['2. Symbol']
+            return (
+                _data["Time Series ({})".format(func.title())],
+                _data['Meta Data']['2. Symbol'],
+            )
         except LookupError:
             raise StockSymbolNotFoundError(symbol)
 
@@ -51,7 +59,9 @@ class AVApi:
         _data, sym = self._time_series('daily', symbol)
         today = max(_data.keys())
         current_data = _data[today]
-        current_data = {key.split(None, 1)[1]: Decimal(value) for key, value in current_data.items()}
+        current_data = {
+            key.split(None, 1)[1]: Decimal(value) for key, value in current_data.items()
+        }
         current_data['symbol'] = sym
         return current_data
 
@@ -92,7 +102,9 @@ def setup_api(bot):
 def stock(text):
     """<symbol> - Get stock information from the AlphaVantage API"""
     if not api:
-        return "This command requires an AlphaVantage API key from https://alphavantage.co"
+        return (
+            "This command requires an AlphaVantage API key from https://alphavantage.co"
+        )
 
     symbol = text.strip().split()[0]
 
@@ -124,13 +136,15 @@ def stock(text):
 
         data['change_str'] = change_str.format_map(data)
 
-        parts.extend([
-            "{change_str}",
-            "Day Open: {open:,.2f}",
-            "Day Range: {low:,.2f} - {high:,.2f}",
-            "Market Cap: {mcap}"
-        ])
+        parts.extend(
+            [
+                "{change_str}",
+                "Day Open: {open:,.2f}",
+                "Day Range: {low:,.2f} - {high:,.2f}",
+                "Market Cap: {mcap}",
+            ]
+        )
 
-    return colors.parse("$(clear){} {}$(clear)".format(
-        out, ' | '.join(parts)
-    ).format_map(data))
+    return colors.parse(
+        "$(clear){} {}$(clear)".format(out, ' | '.join(parts)).format_map(data)
+    )

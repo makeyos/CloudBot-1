@@ -135,5 +135,7 @@ def test_page_error(mock_requests, mock_db):
         horoscope.horoscope('aries', sess, bot, 'some_user', event)
 
     event.reply.assert_called_once_with(
-        "Could not get horoscope: 404 Client Error: Not Found for url: {}. URL Error".format(URL.format(sign=1))
+        "Could not get horoscope: 404 Client Error: Not Found for url: {}. URL Error".format(
+            URL.format(sign=1)
+        )
     )

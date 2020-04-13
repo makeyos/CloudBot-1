@@ -22,6 +22,7 @@ def load_data(xkcd_id):
 @pytest.mark.parametrize('xkcd_id', list(get_files()))
 def test_info(xkcd_id, mock_requests):
     from plugins import xkcd
+
     data = load_data(xkcd_id)
     mock_requests.add(
         mock_requests.GET,
@@ -30,9 +31,7 @@ def test_info(xkcd_id, mock_requests):
     )
 
     date = datetime.date(
-        year=int(data['year']),
-        month=int(data['month']),
-        day=int(data['day']),
+        year=int(data['year']), month=int(data['month']), day=int(data['day']),
     )
 
     no_url = 'xkcd: \x02{}\x02 ({:%d %B %Y})'.format(data['title'], date)

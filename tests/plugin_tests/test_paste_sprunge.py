@@ -27,9 +27,7 @@ def test_paste(mock_requests):
 
     paster = web.pastebins['sprunge']
 
-    mock_requests.add(
-        'POST', 'http://sprunge.us', body='http://sprunge.us/foobar'
-    )
+    mock_requests.add('POST', 'http://sprunge.us', body='http://sprunge.us/foobar')
     assert paster.paste('test data', 'txt') == 'http://sprunge.us/foobar?txt'
 
 
@@ -47,9 +45,7 @@ def test_data_params(mock_requests):
         return 200, {}, 'http://sprunge.us/foobar\n'
 
     paster = web.pastebins['sprunge']
-    mock_requests.add_callback(
-        'POST', 'http://sprunge.us', callback=req_cb
-    )
+    mock_requests.add_callback('POST', 'http://sprunge.us', callback=req_cb)
     assert paster.paste('test data', 'txt') == 'http://sprunge.us/foobar?txt'
     assert body == 'sprunge=test+data'
 
@@ -62,9 +58,7 @@ def test_paste_bytes(mock_requests):
 
     paster = web.pastebins['sprunge']
 
-    mock_requests.add(
-        'POST', 'http://sprunge.us', body='http://sprunge.us/foobar'
-    )
+    mock_requests.add('POST', 'http://sprunge.us', body='http://sprunge.us/foobar')
     assert paster.paste(b'test data', 'txt') == 'http://sprunge.us/foobar?txt'
 
 

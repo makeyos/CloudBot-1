@@ -23,9 +23,8 @@ def imdb(text, bot):
         params = {'q': strip, 'limit': 1}
 
     request = requests.get(
-        "https://imdb-scraper.herokuapp.com/" + endpoint,
-        params=params,
-        headers=headers)
+        "https://imdb-scraper.herokuapp.com/" + endpoint, params=params, headers=headers
+    )
     request.raise_for_status()
     content = request.json()
 
@@ -48,9 +47,8 @@ def imdb_url(match, bot):
 
     params = {'id': match.group(1)}
     request = requests.get(
-        "https://imdb-scraper.herokuapp.com/title",
-        params=params,
-        headers=headers)
+        "https://imdb-scraper.herokuapp.com/title", params=params, headers=headers
+    )
     content = request.json()
 
     if content['success'] is True:
@@ -63,6 +61,5 @@ def movie_str(movie):
     if movie['runtime'] != 'N/A':
         out += ' \x02%(runtime)s\x02.'
     if movie['rating'] != 'N/A' and movie['votes'] != 'N/A':
-        out += ' \x02%(rating)s/10\x02 with \x02%(votes)s\x02' \
-               ' votes.'
+        out += ' \x02%(rating)s/10\x02 with \x02%(votes)s\x02' ' votes.'
     return out % movie

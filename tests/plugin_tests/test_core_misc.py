@@ -21,10 +21,9 @@ class TestClient(Client):  # pylint: disable=abstract-method
 
 
 async def test_do_joins():
-    client = TestClient(
-        Bot(), 'foo', 'foobot', channels=['#foo']
-    )
+    client = TestClient(Bot(), 'foo', 'foobot', channels=['#foo'])
     from plugins.core import core_misc
+
     client.ready = True
     client.config['join_throttle'] = 0
 
