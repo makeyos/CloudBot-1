@@ -1,7 +1,7 @@
 import re
 from collections import defaultdict
 
-from sqlalchemy import Table, Column, String, PrimaryKeyConstraint, select
+from sqlalchemy import Column, PrimaryKeyConstraint, String, Table, select
 
 from cloudbot import hook
 from cloudbot.event import EventType

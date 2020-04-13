@@ -1,6 +1,6 @@
 import logging
 
-from sqlalchemy import Table, Column, UniqueConstraint, String
+from sqlalchemy import Column, String, Table, UniqueConstraint
 
 from cloudbot import hook
 from cloudbot.util import database

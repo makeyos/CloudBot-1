@@ -5,7 +5,7 @@ import requests
 from requests import HTTPError
 
 from cloudbot import hook
-from cloudbot.util import web, formatting
+from cloudbot.util import formatting, web
 from cloudbot.util.http import parse_xml
 
 api_url = 'http://api.wolframalpha.com/v2/query'

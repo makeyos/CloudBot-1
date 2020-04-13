@@ -1,7 +1,7 @@
 import collections
 import inspect
 import re
-from enum import Enum, unique, IntEnum
+from enum import Enum, IntEnum, unique
 
 from cloudbot.event import EventType
 from cloudbot.util import HOOK_ATTR

@@ -4,11 +4,11 @@ from datetime import datetime
 from json import JSONDecodeError
 
 import requests
-from sqlalchemy import Table, Column, PrimaryKeyConstraint, String
+from sqlalchemy import Column, PrimaryKeyConstraint, String, Table
 
 from cloudbot import hook
 from cloudbot.bot import bot
-from cloudbot.util import timeformat, web, database
+from cloudbot.util import database, timeformat, web
 
 api_url = "http://ws.audioscrobbler.com/2.0/?format=json"
 

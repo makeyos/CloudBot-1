@@ -8,9 +8,9 @@ from requests import HTTPError
 from yarl import URL
 
 from cloudbot import hook
-from cloudbot.util import colors, timeformat, formatting
+from cloudbot.util import colors, formatting, timeformat
 from cloudbot.util.formatting import pluralize_auto
-from cloudbot.util.pager import paginated_list, CommandPager
+from cloudbot.util.pager import CommandPager, paginated_list
 
 search_pages = defaultdict(dict)
 user_re = re.compile(r'^(?:/?(?:u(?:ser)?/)?)?(?P<name>.+?)/?$', re.IGNORECASE)

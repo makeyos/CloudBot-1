@@ -25,7 +25,7 @@ import re
 import urllib.parse
 
 from cloudbot import hook
-from cloudbot.util import formatting, web, colors
+from cloudbot.util import colors, formatting, web
 
 COLORS = collections.OrderedDict([
     ('red', '\x0304'),

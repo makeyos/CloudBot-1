@@ -3,7 +3,7 @@ from collections import defaultdict
 from copy import copy
 from threading import RLock
 
-from sqlalchemy import PrimaryKeyConstraint, Column, String, Table, and_
+from sqlalchemy import Column, PrimaryKeyConstraint, String, Table, and_
 from sqlalchemy.exc import IntegrityError
 
 from cloudbot import hook

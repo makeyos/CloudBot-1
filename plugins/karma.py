@@ -3,7 +3,15 @@ import re
 from collections import defaultdict
 
 import sqlalchemy
-from sqlalchemy import Table, String, Column, Integer, PrimaryKeyConstraint, select, and_
+from sqlalchemy import (
+    Column,
+    Integer,
+    PrimaryKeyConstraint,
+    String,
+    Table,
+    and_,
+    select,
+)
 
 from cloudbot import hook
 from cloudbot.util import database

@@ -3,7 +3,7 @@ from collections import defaultdict
 
 from cloudbot import hook
 from cloudbot.util import http
-from cloudbot.util.pager import paginated_list, CommandPager
+from cloudbot.util.pager import CommandPager, paginated_list
 
 search_pages = defaultdict(dict)
 

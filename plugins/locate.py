@@ -1,9 +1,9 @@
 import requests
 
 from cloudbot import hook
-# Define some constants
 from cloudbot.bot import bot
 
+# Define some constants
 base_url = 'https://maps.googleapis.com/maps/api/'
 geocode_api = base_url + 'geocode/json'
 

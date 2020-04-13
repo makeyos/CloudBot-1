@@ -2,7 +2,15 @@ import random
 import re
 import time
 
-from sqlalchemy import select, Table, Column, String, PrimaryKeyConstraint, Boolean, not_
+from sqlalchemy import (
+    Boolean,
+    Column,
+    PrimaryKeyConstraint,
+    String,
+    Table,
+    not_,
+    select,
+)
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.types import REAL
 

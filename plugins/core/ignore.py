@@ -2,7 +2,13 @@ from collections import OrderedDict
 
 from irclib.util.compare import match_mask
 from sqlalchemy import (
-    Boolean, Column, PrimaryKeyConstraint, String, Table, UniqueConstraint, and_,
+    Boolean,
+    Column,
+    PrimaryKeyConstraint,
+    String,
+    Table,
+    UniqueConstraint,
+    and_,
     select,
 )
 

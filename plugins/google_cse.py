@@ -15,7 +15,7 @@ import requests
 
 from cloudbot import hook
 from cloudbot.bot import bot
-from cloudbot.util import formatting, filesize
+from cloudbot.util import filesize, formatting
 
 API_CS = 'https://www.googleapis.com/customsearch/v1'
 

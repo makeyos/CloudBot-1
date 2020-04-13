@@ -4,13 +4,20 @@ from fnmatch import fnmatch
 
 import sqlalchemy as sa
 from sqlalchemy import (
-    Boolean, Column, DateTime, PrimaryKeyConstraint, String, Table, and_, not_,
+    Boolean,
+    Column,
+    DateTime,
+    PrimaryKeyConstraint,
+    String,
+    Table,
+    and_,
+    not_,
 )
 from sqlalchemy.sql import select
 
 from cloudbot import hook
 from cloudbot.event import EventType
-from cloudbot.util import timeformat, database, web
+from cloudbot.util import database, timeformat, web
 from cloudbot.util.formatting import gen_markdown_table
 
 table = Table(

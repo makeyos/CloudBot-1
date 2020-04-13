@@ -6,7 +6,7 @@ from functools import total_ordering
 from threading import RLock
 
 from irclib.util.compare import match_mask
-from sqlalchemy import Table, Column, String, Boolean, PrimaryKeyConstraint, and_
+from sqlalchemy import Boolean, Column, PrimaryKeyConstraint, String, Table, and_
 
 from cloudbot import hook
 from cloudbot.hook import Priority

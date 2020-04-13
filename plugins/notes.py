@@ -1,7 +1,16 @@
 from datetime import datetime
 
 import sqlalchemy
-from sqlalchemy import Table, Column, String, Boolean, Integer, DateTime, PrimaryKeyConstraint, not_
+from sqlalchemy import (
+    Boolean,
+    Column,
+    DateTime,
+    Integer,
+    PrimaryKeyConstraint,
+    String,
+    Table,
+    not_,
+)
 from sqlalchemy.sql import select
 
 from cloudbot import hook

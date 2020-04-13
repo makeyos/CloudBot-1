@@ -3,7 +3,7 @@ import re
 import time
 from collections import defaultdict
 
-from sqlalchemy import Table, Column, String, PrimaryKeyConstraint
+from sqlalchemy import Column, PrimaryKeyConstraint, String, Table
 
 from cloudbot import hook
 from cloudbot.util import database

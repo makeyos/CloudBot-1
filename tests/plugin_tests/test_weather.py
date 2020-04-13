@@ -5,11 +5,11 @@ from unittest.mock import MagicMock
 
 import pytest
 from googlemaps.exceptions import ApiError
+from tests.util import wrap_hook_response
 
 from cloudbot.config import Config
 from cloudbot.event import CommandEvent
 from cloudbot.util.func_utils import call_with_args
-from tests.util import wrap_hook_response
 
 
 class MockConfig(Config):

@@ -3,11 +3,10 @@ import re
 import requests
 
 from cloudbot import hook
-from cloudbot.util import web, formatting
-
-# CONSTANTS
+from cloudbot.util import formatting, web
 from cloudbot.util.http import parse_soup
 
+# CONSTANTS
 steam_re = re.compile(r'.*://store.steampowered.com/app/([0-9]+)?.*', re.I)
 
 API_URL = "http://store.steampowered.com/api/appdetails/"

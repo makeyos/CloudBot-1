@@ -1,7 +1,7 @@
 import requests
 
 from cloudbot import hook
-from cloudbot.util import web, formatting
+from cloudbot.util import formatting, web
 
 shortcuts = {
     'cloudbot': 'CloudBotIRC/CloudBot'

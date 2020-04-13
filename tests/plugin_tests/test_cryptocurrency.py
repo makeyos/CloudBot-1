@@ -4,11 +4,11 @@ from unittest.mock import MagicMock
 
 import pytest
 from responses import Response
+from tests.util import HookResult, wrap_hook_response
 
 from cloudbot.bot import bot
 from cloudbot.event import CommandEvent
 from plugins import cryptocurrency
-from tests.util import HookResult, wrap_hook_response
 
 
 def test_parse():

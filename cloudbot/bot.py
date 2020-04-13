@@ -18,11 +18,11 @@ from watchdog.observers import Observer
 from cloudbot import clients
 from cloudbot.client import Client
 from cloudbot.config import Config
-from cloudbot.event import Event, CommandEvent, RegexEvent, EventType
+from cloudbot.event import CommandEvent, Event, EventType, RegexEvent
 from cloudbot.hook import Action
 from cloudbot.plugin import PluginManager
-from cloudbot.reloader import PluginReloader, ConfigReloader
-from cloudbot.util import database, formatting, async_util
+from cloudbot.reloader import ConfigReloader, PluginReloader
+from cloudbot.util import async_util, database, formatting
 from cloudbot.util.mapping import KeyFoldDict
 
 logger = logging.getLogger("cloudbot")

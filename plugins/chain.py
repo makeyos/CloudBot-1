@@ -1,7 +1,7 @@
 import itertools
 from operator import attrgetter
 
-from sqlalchemy import Table, Column, String, Boolean, PrimaryKeyConstraint
+from sqlalchemy import Boolean, Column, PrimaryKeyConstraint, String, Table
 
 from cloudbot import hook
 from cloudbot.event import CommandEvent

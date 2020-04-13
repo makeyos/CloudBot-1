@@ -20,7 +20,7 @@ from operator import attrgetter
 from typing import Optional
 
 import requests
-from requests import RequestException, Response, PreparedRequest, HTTPError
+from requests import HTTPError, PreparedRequest, RequestException, Response
 
 # Constants
 DEFAULT_SHORTENER = 'is.gd'

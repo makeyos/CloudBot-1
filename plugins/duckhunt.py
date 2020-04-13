@@ -2,9 +2,18 @@ import operator
 import random
 from collections import defaultdict
 from threading import Lock
-from time import time, sleep
+from time import sleep, time
 
-from sqlalchemy import Boolean, Column, Integer, PrimaryKeyConstraint, String, Table, and_, desc
+from sqlalchemy import (
+    Boolean,
+    Column,
+    Integer,
+    PrimaryKeyConstraint,
+    String,
+    Table,
+    and_,
+    desc,
+)
 from sqlalchemy.sql import select
 
 from cloudbot import hook

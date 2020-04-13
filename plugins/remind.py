@@ -14,10 +14,10 @@ License:
 import time
 from datetime import datetime, timedelta
 
-from sqlalchemy import Table, Column, String, DateTime, PrimaryKeyConstraint
+from sqlalchemy import Column, DateTime, PrimaryKeyConstraint, String, Table
 
 from cloudbot import hook
-from cloudbot.util import database, colors
+from cloudbot.util import colors, database
 from cloudbot.util.timeformat import format_time, time_since
 from cloudbot.util.timeparse import time_parse
 

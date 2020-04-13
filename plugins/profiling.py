@@ -4,6 +4,9 @@ import sys
 import threading
 import traceback
 
+from cloudbot import hook
+from cloudbot.util import web
+
 PYMPLER_ENABLED = False
 
 if PYMPLER_ENABLED:
@@ -21,8 +24,6 @@ try:
 except ImportError:
     objgraph = None
 
-from cloudbot import hook
-from cloudbot.util import web
 
 
 def create_tracker():

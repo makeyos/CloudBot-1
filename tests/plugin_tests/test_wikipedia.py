@@ -2,10 +2,10 @@ from unittest.mock import MagicMock
 
 import pytest
 from requests import RequestException
+from tests.util import wrap_hook_response
 
 from cloudbot.event import CommandEvent
 from plugins import wikipedia
-from tests.util import wrap_hook_response
 
 
 def do_search(query, results=None):

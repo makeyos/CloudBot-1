@@ -1,4 +1,4 @@
-from urllib.error import URLError, HTTPError
+from urllib.error import HTTPError, URLError
 
 from cloudbot import hook
 from cloudbot.util import http

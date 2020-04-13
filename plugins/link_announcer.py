@@ -3,7 +3,7 @@ import re
 import requests
 
 from cloudbot import hook
-from cloudbot.hook import Priority, Action
+from cloudbot.hook import Action, Priority
 from cloudbot.util.http import parse_soup
 
 MAX_TITLE = 100

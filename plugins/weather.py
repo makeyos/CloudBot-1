@@ -5,10 +5,10 @@ from typing import Optional
 import googlemaps
 from forecastiopy.ForecastIO import ForecastIO
 from googlemaps.exceptions import ApiError
-from sqlalchemy import Table, Column, PrimaryKeyConstraint, String
+from sqlalchemy import Column, PrimaryKeyConstraint, String, Table
 
 from cloudbot import hook
-from cloudbot.util import web, database, colors
+from cloudbot.util import colors, database, web
 
 Api = Optional[googlemaps.Client]
 

@@ -9,7 +9,7 @@ import json
 import logging
 import time
 import weakref
-from collections import Mapping, Iterable, namedtuple
+from collections import Iterable, Mapping, namedtuple
 from contextlib import suppress
 from numbers import Number
 from operator import attrgetter

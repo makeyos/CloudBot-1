@@ -4,7 +4,7 @@ import os
 import random
 import time
 
-from sqlalchemy import table, column, String, Float, and_, select
+from sqlalchemy import Float, String, and_, column, select, table
 
 from cloudbot import hook
 from cloudbot.util.database import metadata
