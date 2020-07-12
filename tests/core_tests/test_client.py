@@ -1,7 +1,9 @@
 import asyncio
 from unittest.mock import MagicMock, patch
 
-from cloudbot.client import Client
+import pytest
+
+from cloudbot.client import Client, ClientConnectError
 
 
 class Bot(MagicMock):
@@ -12,7 +14,7 @@ class MockClient(Client):  # pylint: disable=abstract-method
     _connected = False
 
     def __init__(self, bot, *args, **kwargs):
-        super().__init__(bot, 'TestClient', *args, **kwargs)
+        super().__init__(bot, "TestClient", *args, **kwargs)
         self.active = True
 
     @property
@@ -22,33 +24,29 @@ class MockClient(Client):  # pylint: disable=abstract-method
     async def connect(self, timeout=None):
         self._connected = True
 
+    def describe_server(self):
+        return "MockServer"
+
 
 class FailingMockClient(MockClient):  # pylint: disable=abstract-method
-    def __init__(self, *args, fail_count=None, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fail_count = fail_count
-
     async def connect(self, timeout=None):
-        if self.fail_count is not None and self.fail_count > 0:
-            self.fail_count -= 1
-            raise ValueError("This is a test")
+        self.active = False
+        raise ValueError("This is a test")
 
 
 def test_client_no_config():
-    client = MockClient(
-        Bot(), 'foo', 'foobot', channels=['#foo']
-    )
-    assert client.config.get('a') is None
+    client = MockClient(Bot(), "foo", "foobot", channels=["#foo"])
+    assert client.config.get("a") is None
 
 
 def test_client():
     client = MockClient(
-        Bot(), 'foo', 'foobot', channels=['#foo'], config={'name': 'foo'}
+        Bot(), "foo", "foobot", channels=["#foo"], config={"name": "foo"}
     )
 
-    assert client.config_channels == ['#foo']
-    assert client.config['name'] == 'foo'
-    assert client.type == 'TestClient'
+    assert client.config_channels == ["#foo"]
+    assert client.config["name"] == "foo"
+    assert client.type == "TestClient"
 
     assert client.active is True
     client.active = False
@@ -59,17 +57,30 @@ def test_client():
 
 
 def test_client_connect_exc():
-    with patch('random.randrange', return_value=1):
+    with pytest.raises(ClientConnectError):
+        with patch("random.randrange", return_value=1):
+            client = FailingMockClient(
+                Bot(),
+                "foo",
+                "foobot",
+                channels=["#foo"],
+                config={"name": "foo"},
+            )
+            client.loop.run_until_complete(client.try_connect())
+
+
+def test_client_connect_inactive():
+    with patch("random.randrange", return_value=1):
         client = FailingMockClient(
-            Bot(), 'foo', 'foobot', channels=['#foo'], config={'name': 'foo'},
-            fail_count=1
+            Bot(), "foo", "foobot", channels=["#foo"], config={"name": "foo"}
         )
+        client.active = False
         client.loop.run_until_complete(client.try_connect())
 
 
 def test_auto_reconnect():
     client = MockClient(
-        Bot(), 'foo', 'foobot', channels=['#foo'], config={'name': 'foo'}
+        Bot(), "foo", "foobot", channels=["#foo"], config={"name": "foo"}
     )
 
     client.active = False

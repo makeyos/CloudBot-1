@@ -3,21 +3,25 @@ import re
 import time
 from collections import defaultdict
 
-from sqlalchemy import Table, Column, String, PrimaryKeyConstraint
+from sqlalchemy import Column, PrimaryKeyConstraint, String, Table, and_
 
 from cloudbot import hook
 from cloudbot.util import database
+
+NO_HERALD_MSG = (
+    "You don't have a herald set try .herald <message> to set your greeting."
+)
 
 delay = 10
 floodcheck = {}
 
 table = Table(
-    'herald',
+    "herald",
     database.metadata,
-    Column('name', String),
-    Column('chan', String),
-    Column('quote', String),
-    PrimaryKeyConstraint('name', 'chan')
+    Column("name", String),
+    Column("chan", String),
+    Column("quote", String),
+    PrimaryKeyConstraint("name", "chan"),
 )
 
 herald_cache = defaultdict(dict)
@@ -35,12 +39,15 @@ def load_cache(db):
 
 @hook.command()
 def herald(text, nick, chan, db, reply):
-    """{<message>|show|delete|remove} - adds a greeting for your nick that will be announced everytime you join the
-    channel. Using .herald show will show your current herald and .herald delete will remove your greeting."""
+    """
+    {<message>|show|delete|remove} - adds a greeting for your nick that will
+    be announced everytime you join the channel. Using .herald show will show
+    your current herald and .herald delete will remove your greeting.
+    """
     if text.lower() == "show":
         greeting = herald_cache[chan.casefold()].get(nick.casefold())
         if greeting is None:
-            return "you don't have a herald set try .herald <message> to set your greeting."
+            return NO_HERALD_MSG
 
         return greeting
 
@@ -49,19 +56,28 @@ def herald(text, nick, chan, db, reply):
         if greeting is None:
             return "no herald set, unable to delete."
 
-        query = table.delete().where(table.c.name == nick.lower()).where(table.c.chan == chan.lower())
+        query = (
+            table.delete()
+            .where(table.c.name == nick.lower())
+            .where(table.c.chan == chan.lower())
+        )
         db.execute(query)
         db.commit()
 
-        reply("greeting \'{}\' for {} has been removed".format(greeting, nick))
+        reply("greeting '{}' for {} has been removed".format(greeting, nick))
 
         load_cache(db)
     else:
-        res = db.execute(
-            table.update().where(table.c.name == nick.lower()).where(table.c.chan == chan.lower()).values(quote=text)
+        clause = and_(
+            table.c.name == nick.lower(), table.c.chan == chan.lower()
         )
+        res = db.execute(table.update().where(clause).values(quote=text))
         if res.rowcount == 0:
-            db.execute(table.insert().values(name=nick.lower(), chan=chan.lower(), quote=text))
+            db.execute(
+                table.insert().values(
+                    name=nick.lower(), chan=chan.lower(), quote=text
+                )
+            )
 
         db.commit()
         reply("greeting successfully added")
@@ -69,14 +85,18 @@ def herald(text, nick, chan, db, reply):
         load_cache(db)
 
 
-@hook.command(permissions=["botcontrol", "snoonetstaff", "deleteherald", "chanop"])
+@hook.command(
+    permissions=["botcontrol", "snoonetstaff", "deleteherald", "chanop"]
+)
 def deleteherald(text, chan, db, reply):
     """<nickname> - Delete [nickname]'s herald."""
 
     nick = text.strip()
 
     res = db.execute(
-        table.delete().where(table.c.name == nick.lower()).where(table.c.chan == chan.lower())
+        table.delete()
+        .where(table.c.name == nick.lower())
+        .where(table.c.chan == chan.lower())
     )
 
     db.commit()
@@ -91,10 +111,10 @@ def deleteherald(text, chan, db, reply):
 
 @hook.irc_raw("JOIN", singlethread=True)
 def welcome(nick, message, bot, chan):
-    decoy = re.compile('[Òo○O0öøóȯôőŏᴏōο][<>＜]')
-    colors_re = re.compile(r'\x02|\x03(?:\d{1,2}(?:,\d{1,2})?)?', re.UNICODE)
-    bino_re = re.compile('b+i+n+o+', re.IGNORECASE)
-    offensive_re = re.compile('卐')
+    decoy = re.compile("[Òo○O0öøóȯôőŏᴏōο][<>＜]")
+    colors_re = re.compile(r"\x02|\x03(?:\d{1,2}(?:,\d{1,2})?)?", re.UNICODE)
+    bino_re = re.compile("b+i+n+o+", re.IGNORECASE)
+    offensive_re = re.compile("卐")
 
     grab = bot.plugin_manager.find_plugin("grab")
 
@@ -106,10 +126,12 @@ def welcome(nick, message, bot, chan):
 
     greet = herald_cache[chan.casefold()].get(nick.casefold())
     if greet:
-        stripped = greet.translate(dict.fromkeys(map(ord, ["\u200b", " ", "\u202f", "\x02"])))
+        stripped = greet.translate(
+            dict.fromkeys(map(ord, ["\u200b", " ", "\u202f", "\x02"]))
+        )
         stripped = colors_re.sub("", stripped)
-        greet = re.sub(bino_re, 'flenny', greet)
-        greet = re.sub(offensive_re, ' freespeech oppression ', greet)
+        greet = re.sub(bino_re, "flenny", greet)
+        greet = re.sub(offensive_re, " freespeech oppression ", greet)
 
         words = greet.lower().split()
         cmd = words.pop(0)
